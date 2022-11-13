@@ -35,13 +35,17 @@ end
 -- 0001
 example (a b c : ℝ) : (c * b) * a = b * (a * c) :=
 begin
-  sorry
+  rw mul_comm c b,
+  rw mul_assoc b c a,
+  rw mul_comm c a,
 end
 
 -- 0002
 example (a b c : ℝ) : a * (b * c) = b * (a * c) :=
 begin
-  sorry
+  rw ← mul_assoc a b c,
+  rw mul_comm a b,
+  rw mul_assoc b a c,
 end
 
 /-
@@ -55,7 +59,9 @@ Try to figure out what happens.
 -- 0003
 example (a b c : ℝ) : a * (b * c) = b * (a * c) :=
 begin
-  sorry
+  rw ← mul_assoc,
+  rw mul_comm a b,
+  rw mul_assoc,
 end
 
 /-
@@ -86,7 +92,10 @@ And the next one can use:
 -- 0004
 example (a b c d : ℝ) (hyp : c = b*a - d) (hyp' : d = a*b) : c = 0 :=
 begin
-  sorry
+  rw hyp' at hyp,
+  rw mul_comm b a at hyp,
+  rw sub_self at hyp,
+  exact hyp,
 end
 
 /-
