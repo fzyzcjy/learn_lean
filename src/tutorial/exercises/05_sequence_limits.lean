@@ -246,6 +246,18 @@ def is_seq_sup (M : ℝ) (u : ℕ → ℝ) :=
 example (M : ℝ) (h : is_seq_sup M u) (h' : non_decreasing u) :
 seq_limit u M :=
 begin
-  sorry
+  intros ε ε_pos,
+  -- unfold is_seq_sup at h,
+  unfold non_decreasing at h',
+  cases h with h1 h2,
+  specialize h2 ε (by linarith),
+  cases h2 with N h3,
+  use N,
+  intros n hn,
+  specialize h' N n (by linarith),
+  apply abs_le.mpr,
+  split,
+  { linarith },
+  { linarith [h1 n] },
 end
 
