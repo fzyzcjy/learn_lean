@@ -303,7 +303,8 @@ Let's practise using `intros`. -/
 -- 0016
 example (a b : ℝ): 0 ≤ b → a ≤ a + b :=
 begin
-  sorry
+  intros ha,
+  exact le_add_of_nonneg_right ha,
 end
 
 
@@ -359,7 +360,11 @@ unspecified mathematical statements.
 -- 0017
 example (P Q R : Prop) : P ∧ Q → Q ∧ P :=
 begin
-  sorry
+  intro ha,
+  cases ha with hb hc,
+  split,
+  exact hc,
+  exact hb,
 end
 
 /-
@@ -392,7 +397,8 @@ Now redo the previous exercise using all those compressing techniques, in exactl
 -- 0018
 example (P Q R : Prop): P ∧ Q → Q ∧ P :=
 begin
-  sorry
+  rintros ⟨h₁, h₂⟩,
+  exact ⟨h₂, h₁⟩,
 end
 
 /-
@@ -404,7 +410,15 @@ an equivalence into two implications.
 -- 0019
 example (P Q R : Prop) : (P ∧ Q → R) ↔ (P → (Q → R)) :=
 begin
-  sorry
+  split,
+  {
+    intros ha p q,
+    exact ha ⟨p, q⟩,
+  },
+  {
+    rintros ha ⟨hbl, hbr⟩,
+    exact ha hbl hbr,
+  },
 end
 
 /-
@@ -437,7 +451,7 @@ Now let's enjoy this for a while.
 -- 0020
 example (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : 0 ≤ a + b :=
 begin
-  sorry
+  linarith,
 end
 
 /- And let's combine with our earlier lemmas. -/
@@ -445,7 +459,7 @@ end
 -- 0021
 example (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d) : a + c ≤ b + d :=
 begin
-  sorry
+  linarith,
 end
 
 
