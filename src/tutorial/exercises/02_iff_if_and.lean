@@ -229,21 +229,38 @@ Let's now practice all three styles using:
 -- 0013
 example (a b c : ℝ) (hc : c ≤ 0) (hab :  a ≤ b) : b*c ≤ a*c :=
 begin
-  sorry
+  rw ← sub_nonneg,
+  have key : a*c-b*c=(a-b)*c,
+  {ring,},
+  rw key,
+  apply mul_nonneg_of_nonpos_of_nonpos,
+  { rwa sub_nonpos },
+  exact hc,
 end
 
 /- Using forward reasoning -/
 -- 0014
 example (a b c : ℝ) (hc : c ≤ 0) (hab :  a ≤ b) : b*c ≤ a*c :=
 begin
-  sorry
+  have hab' : a - b ≤ 0,
+  -- { rw ← sub_nonpos at hab, exact hab, },
+  { rwa ← sub_nonpos at hab, },
+  have h₁ : 0 ≤ (a-b) * c,
+  { exact mul_nonneg_of_nonpos_of_nonpos hab' hc, },
+  have h₂ : (a-b)*c = a*c - b*c,
+  { ring, },
+  rw h₂ at h₁,
+  rw sub_nonneg at h₁,
+  exact h₁,
 end
 
 /-- Using a combination of both, with a `calc` block -/
 -- 0015
 example (a b c : ℝ) (hc : c ≤ 0) (hab :  a ≤ b) : b*c ≤ a*c :=
 begin
-  sorry
+  rw ← sub_nonneg,
+  calc 0 ≤ (a-b)*c : by exact mul_nonneg_of_nonpos_of_nonpos (by rwa sub_nonpos) hc
+  ... = a*c - b*c : by ring,
 end
 
 /-
