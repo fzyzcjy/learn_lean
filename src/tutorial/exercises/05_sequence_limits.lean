@@ -165,8 +165,23 @@ example (hu : seq_limit u l) (hw : seq_limit w l)
 (h : ∀ n, u n ≤ v n)
 (h' : ∀ n, v n ≤ w n) : seq_limit v l :=
 begin
-  sorry
-
+  intros ε ε_pos,
+  cases hu ε ε_pos with N₁ hN₁,
+  cases hw ε ε_pos with N₂ hN₂,
+  use max N₁ N₂,
+  intros n hn,
+  rw ge_max_iff at hn,
+  apply abs_le.mpr,
+  specialize hN₁ n (by linarith),
+  specialize hN₂ n (by linarith),
+  specialize h n,
+  specialize h' n,
+  rw abs_le at *, -- from std ans
+  split,
+  calc -ε ≤ u n - l : by linarith
+  ... ≤ v n - l : by linarith,
+  calc v n - l ≤ w n - l : by linarith
+  ... ≤ ε : by linarith,
 end
 
 /- What about < ε? -/
