@@ -42,7 +42,12 @@ Let's prove a variation (without invoking commutativity of addition since this w
 -- 0009
 example {a b : ℝ} (hab : a ≤ b) (c : ℝ) : a + c ≤ b + c :=
 begin
-  sorry
+  rw ← sub_nonneg,
+  have key : (b+c)-(a+c) = b-a,
+  ring,
+  rw key,
+  rw sub_nonneg,
+  exact hab,
 end
 
 
@@ -84,7 +89,8 @@ end
 -- 0010
 example (a b : ℝ) (hb : 0 ≤ b) : a ≤ a + b :=
 begin
-  sorry
+  calc a = a + 0 : by ring
+  ... ≤ a + b : add_le_add_left hb a,
 end
 
 /-
@@ -112,7 +118,8 @@ the pieces.
 -- 0011
 example (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : 0 ≤ a + b :=
 begin
-  sorry
+  calc 0 ≤ a : ha
+  ... ≤ a + b : le_add_of_nonneg_right hb,
 end
 
 /- And let's combine with our earlier lemmas. -/
@@ -120,7 +127,8 @@ end
 -- 0012
 example (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d) : a + c ≤ b + d :=
 begin
- sorry
+ calc a+c ≤ b+c : add_le_add_right hab c
+ ... ≤ b+d : add_le_add_left hcd b,
 end
 
 /-
