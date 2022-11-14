@@ -110,7 +110,13 @@ end
 -- 0024
 example (f g : ℝ → ℝ) : odd_fun f → odd_fun g →  odd_fun (g ∘ f) :=
 begin
-  sorry
+  intros hf hg x,
+  unfold odd_fun at hf,
+  unfold odd_fun at hg,
+  calc (g ∘ f) (-x) = g(f(-x)) : rfl
+  ... = g(-f(x)) : by rw hf
+  ... = -g(f(x)) : by rw hg
+  ... = -(g ∘ f) x : rfl,
 end
 
 /-
@@ -198,7 +204,10 @@ end
 -- 0025
 example (f g : ℝ → ℝ) (hf : non_decreasing f) (hg : non_increasing g) : non_increasing (g ∘ f) :=
 begin
-  sorry
+  intros x₁ x₂ h,
+  apply hg,
+  apply hf,
+  exact h,
 end
 
 /-
@@ -239,7 +248,13 @@ end
 -- 0026
 example (x y : ℝ) : x^2 = y^2 → x = y ∨ x = -y :=
 begin
-  sorry
+  intro h,
+  have h₂ : (x+y)*(x-y) = 0,
+  { linarith },
+  rw mul_eq_zero at h₂,
+  cases h₂ with Ha Hb,
+  { right, linarith },
+  { left, linarith },
 end
 
 /-
@@ -250,7 +265,20 @@ In the next exercise, we can use:
 -- 0027
 example (f : ℝ → ℝ) : non_decreasing f ↔ ∀ x y, x < y → f x ≤ f y :=
 begin
-  sorry
+  split,
+  {
+    intros hd x y hxy,
+    apply hd,
+    linarith,
+  },
+  {
+    intros h x₁ x₂ hx,
+    have hor : x₁=x₂ ∨ x₁ < x₂,
+    { exact eq_or_lt_of_le hx },
+    cases hor with ha hb,
+    { rw ha },
+    { exact h _ _ hb },
+  },
 end
 
 /-
@@ -261,6 +289,22 @@ In the next exercise, we can use:
 -- 0028
 example (f : ℝ → ℝ) (h : non_decreasing f) (h' : ∀ x, f (f x) = x) : ∀ x, f x = x :=
 begin
-  sorry
+  intros x,
+  unfold non_decreasing at h,
+  have h : f x ≤ x ∨ x ≤ f x,
+  { exact le_total (f x) x },
+  cases h,
+  {
+    have h2 : f (f x) ≤ f x,
+    { exact h (f x) x h_1 },
+    rw h' at h2,
+    linarith,
+  },
+  {
+    have h2: f x ≤ f (f x),
+    { exact h x (f x) h_1 },
+    rw h' at h2,
+    linarith,
+  }
 end
 
