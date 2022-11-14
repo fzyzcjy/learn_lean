@@ -101,7 +101,10 @@ you can put your mouse cursor above the symbol and wait for one second.
 -- 0023
 example (f g : ℝ → ℝ) : even_fun f → even_fun (g ∘ f) :=
 begin
-  sorry
+  intros hf x,
+  unfold even_fun at hf,
+  calc (g ∘ f) (-x) = g (f (-x)): rfl
+  ... = g(f(x)) : by rw hf,
 end
 
 -- 0024
