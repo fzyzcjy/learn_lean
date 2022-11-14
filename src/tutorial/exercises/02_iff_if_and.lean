@@ -486,6 +486,29 @@ open nat
 -- 0022
 example (a b : ℕ) : a ∣ b ↔ gcd a b = a :=
 begin
-  sorry
+  split,
+  have fact : gcd a b ∣ a ∧ gcd a b ∣ b,
+  {
+    have h : gcd a b ∣ gcd a b,
+    { exact dvd_refl (gcd a b) },
+    rwa dvd_gcd_iff at h,
+  },
+  cases fact,
+  {
+    intro hab,
+    apply dvd_antisymm,
+    { exact fact_left },
+    {
+      apply dvd_gcd_iff.mpr,
+      exact ⟨(by exact dvd_refl a), hab⟩,
+    },
+  },
+  {
+    intro ha,
+    have hc: a ∣ gcd a b,
+    { rw ha },
+    rw dvd_gcd_iff at hc,
+    exact hc.right,
+  },
 end
 
