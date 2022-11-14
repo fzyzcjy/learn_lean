@@ -189,7 +189,25 @@ end
 example (u l) : seq_limit u l ↔
  ∀ ε > 0, ∃ N, ∀ n ≥ N, |u n - l| < ε :=
 begin
-  sorry
+  split,
+  {
+    intros h ε ε_pos,
+    specialize h (ε/2) (by linarith),
+    cases h with N hN,
+    use N,
+    intros n hn,
+    specialize hN n hn,
+    linarith,
+  },
+  {
+    intros h ε ε_pos,
+    specialize h ε ε_pos,
+    cases h with N h2,
+    use N,
+    intros n hn,
+    specialize h2 n hn,
+    linarith,
+  }
 end
 
 /- In the next exercise, we'll use
@@ -201,7 +219,18 @@ eq_of_abs_sub_le_all (x y : ℝ) : (∀ ε > 0, |x - y| ≤ ε) → x = y
 -- 0037
 example : seq_limit u l → seq_limit u l' → l = l' :=
 begin
-  sorry
+  intros h1 h2,
+  apply eq_of_abs_sub_le_all,
+  intros ε ε_pos,
+  cases h1 (ε/2) (by linarith) with N1 hN1,
+  cases h2 (ε/2) (by linarith) with N2 hN2,
+  specialize hN1 (max N1 N2) (le_max_left N1 N2),
+  specialize hN2 (max N1 N2) (le_max_right N1 N2),
+  calc |l - l'| = | (l - u (max N1 N2)) + (u (max N1 N2) - l')| : by ring_nf
+  ... ≤ |l-u (max N1 N2)| + |u (max N1 N2) - l'| : by apply abs_add
+  ... = |u (max N1 N2) - l| + |u (max N1 N2) - l'| : by rw abs_sub_comm
+  ... ≤ ε/2 + ε/2 : by linarith
+  ... = ε : by linarith,
 end
 
 /-
