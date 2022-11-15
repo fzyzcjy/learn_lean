@@ -92,13 +92,17 @@ begin
   { intro h,
     split,
     {
-      sorry
+      exact h.left,
     },
     { have : ∀ n : ℕ, ∃ a ∈ A, x - 1/(n+1) < a,
       { intros n,
         have : 1/(n+1 : ℝ) > 0,
           exact nat.one_div_pos_of_nat,
-        sorry
+        by_contradiction h2,
+        push_neg at h2,
+        have h4 : x ≤ (x-1/(n+1)),
+        { exact h.right (x-1/(n+1)) h2 },
+        linarith,
       },
       choose u hu using this,
       sorry
