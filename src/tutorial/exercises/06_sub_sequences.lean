@@ -147,6 +147,12 @@ In the next exercise, you can reuse
 -- 0044
 example (hu : cauchy_sequence u) (hl : cluster_point u l) : seq_limit u l :=
 begin
-  sorry
+  intros ε ε_pos,
+  cases hu (ε/2) (by linarith) with N hN,
+  rcases near_cluster hl (ε/2) (by linarith) N with ⟨m,hm,h2⟩,
+  use N,
+  intros n hn,
+  specialize hN m n hm hn,
+  
 end
 
