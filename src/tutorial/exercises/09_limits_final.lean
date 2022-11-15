@@ -30,7 +30,14 @@ Let's start with a variation on a known exercise.
 lemma le_lim {x y : ℝ} {u : ℕ → ℝ} (hu : seq_limit u x)
   (ineg : ∃ N, ∀ n ≥ N, y ≤ u n) : y ≤ x :=
 begin
-  sorry
+  apply le_of_le_add_all,
+  intros ε ε_pos,
+  cases hu ε ε_pos with N hN,
+  cases ineg with M hM,
+  specialize hN (max N M) (le_max_left _ _),
+  specialize hM (max N M) (le_max_right _ _),
+  rw abs_le at hN,
+  linarith [hN.left],
 end
 
 /-
