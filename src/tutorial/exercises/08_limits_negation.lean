@@ -142,11 +142,12 @@ but we won't need this.
 example {A : set ℝ} {x : ℝ} (hx : is_sup A x) :
 ∀ y, y < x → ∃ a ∈ A, y < a :=
 begin
-  unfold is_sup at hx,
-  intros y hyx,
-  by_contradiction h2,
-  push_neg at h2,
-  linarith [hx.right y h2],
+  intros y,
+  contrapose!,
+  exact hx.right y,
+  -- by_contradiction h2,
+  -- push_neg at h2,
+  -- linarith [hx.right y h2],
 end
 
 /-
