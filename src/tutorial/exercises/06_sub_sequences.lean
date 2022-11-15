@@ -84,7 +84,18 @@ One gets used to it. Alternatively, one can get rid of it using the lemma
 lemma near_cluster :
   cluster_point u a → ∀ ε > 0, ∀ N, ∃ n ≥ N, |u n - a| ≤ ε :=
 begin
-  sorry
+  intros h1 ε ε_pos N,
+  rcases h1 with ⟨φ,he,hs⟩,
+  specialize hs ε ε_pos,
+  cases hs with M hM,
+  have hi : (∃ i ≥ M, φ i ≥ N),
+  { apply extraction_ge he N M, },
+  rcases hi with ⟨i,hiM,hiN⟩,
+  use (φ i),
+  split,
+  { exact hiN },
+  specialize hM i hiM,
+  linarith,
 end
 
 /-
