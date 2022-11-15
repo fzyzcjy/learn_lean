@@ -49,13 +49,25 @@ open int
 -- 0045
 example (n : ℤ) (h_even : even n) (h_not_even : ¬ even n) : 0 = 1 :=
 begin
-  sorry
+  exfalso,
+  exact h_not_even h_even,
 end
 
 -- 0046
 example (P Q : Prop) (h₁ : P ∨ Q) (h₂ : ¬ (P ∧ Q)) : ¬ P ↔ Q :=
 begin
-  sorry
+  split,
+  {
+    intro Pnot,
+    cases h₁ with P Q,
+    { exfalso,
+      exact Pnot P },
+    { exact Q },
+  },
+  {
+    intros Q P,
+    exact h₂ (and.intro P Q),
+  }
 end
 
 /-
