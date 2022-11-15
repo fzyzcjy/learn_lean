@@ -86,16 +86,9 @@ lemma near_cluster :
 begin
   intros h1 ε ε_pos N,
   rcases h1 with ⟨φ,he,hs⟩,
-  specialize hs ε ε_pos,
-  cases hs with M hM,
-  have hi : (∃ i ≥ M, φ i ≥ N),
-  { apply extraction_ge he N M, },
-  rcases hi with ⟨i,hiM,hiN⟩,
-  use (φ i),
-  split,
-  { exact hiN },
-  specialize hM i hiM,
-  linarith,
+  cases hs ε ε_pos with M hM,
+  rcases extraction_ge he N M with ⟨i,hiM,hiN⟩,
+  exact ⟨φ i, hiN, hM i hiM⟩,
 end
 
 /-
