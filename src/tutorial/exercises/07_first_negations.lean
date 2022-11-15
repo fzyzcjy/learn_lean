@@ -239,7 +239,21 @@ In the first exercise, only the definition of negation is needed.
 -- 0050
 example (n : ℤ) : ¬ (∃ k, n = 2*k) ↔ ∀ k, n ≠ 2*k :=
 begin
-  sorry
+  split,
+  {
+    intros h1 k h2,
+    -- have fact: (∃ k, n = 2*k),
+    -- { use k,
+    --   exact h2 },
+    -- exact h1 fact,
+    apply h1,
+    use k,
+    exact h2,
+  },
+  {
+    rintros h1 ⟨k,h2⟩,
+    exact h1 k h2,
+  },
 end
 
 /-
