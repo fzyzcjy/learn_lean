@@ -159,13 +159,30 @@ exercise below.
 lemma le_of_le_add_all' {x y : ℝ} :
   (∀ ε > 0, y ≤ x + ε) →  y ≤ x :=
 begin
-  sorry
+  contrapose!,
+  intros hxy,
+  use (y-x)/2,
+  split; linarith, -- NOTE split
 end
 
 -- 0070
 example {x y : ℝ} {u : ℕ → ℝ} (hu : seq_limit u x)
   (ineg : ∀ n, u n ≤ y) : x ≤ y :=
 begin
-  sorry
+  by_contradiction hxy,
+  push_neg at hxy,
+  let ε := (x-y)/2,
+  have fact : ε > 0,
+  { dsimp [ε], linarith, },
+  cases hu ε fact with N hN,
+  specialize hN N (by linarith),
+  rw abs_le at hN,
+  cases hN,
+  specialize ineg N,
+  have h0 : y > y,
+  calc y ≥ u N : ineg
+  ... ≥ x - ε : by linarith
+  ... > y : by { dsimp [ε], linarith, },
+  linarith,
 end
 
