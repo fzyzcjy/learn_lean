@@ -116,7 +116,22 @@ end
 -- 0042
 lemma cluster_limit (hl : seq_limit u l) (ha : cluster_point u a) : a = l :=
 begin
-  sorry
+  -- unfold seq_limit at hl,
+  -- unfold cluster_point at ha,
+  rcases ha with ⟨φ, hφ, hs⟩,
+  -- unfold seq_limit at hs,
+  have fact : seq_limit (u ∘ φ) l,
+  {
+    intros ε ε_pos,
+    -- unfold seq_limit at hl,
+    cases hl ε ε_pos with N hN,
+    use N,
+    intros n hn,
+    apply hN,
+    calc φ n ≥ n : id_le_extraction hφ n
+    ... ≥ N : hn,
+  },
+  exact unique_limit hs fact,
 end
 
 /-- Cauchy_sequence sequence -/
