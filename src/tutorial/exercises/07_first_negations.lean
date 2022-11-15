@@ -348,6 +348,35 @@ Let's use this trick, together with:
 -- 0054
 example (f : ℝ → ℝ) : (∀ x y, x < y → f x < f y) ↔ (∀ x y, (x ≤ y ↔ f x ≤ f y)) :=
 begin
-  sorry
+  split,
+  {
+    intros h1 x y,
+    split,
+    {
+      intros hxy,
+      rcases eq_or_lt_of_le hxy with ⟨heq,hle⟩,
+      { refl },
+      {
+        specialize h1 x y h,
+        linarith,
+      }
+    },
+    {
+      intros hf,
+      by_contradiction h2,
+      push_neg at h2,
+      specialize h1 y x h2,
+      linarith,
+    },
+  },
+  {
+    intros h1,
+    by_contradiction h2,
+    push_neg at h2,
+    rcases h2 with ⟨x,y,hxy,hf⟩,
+    have fact:y≤x,
+    { exact (h1 y x).mpr hf },
+    linarith,
+  },
 end
 
