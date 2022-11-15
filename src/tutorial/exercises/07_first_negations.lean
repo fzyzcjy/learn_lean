@@ -132,7 +132,9 @@ non Q ⇒ non P.
 -- 0047
 example (P Q : Prop) (h : ¬ Q → ¬ P) : P → Q :=
 begin
-  sorry
+  intro hP,
+  by_contradiction hnQ,
+  exact h hnQ hP,
 end
 
 /-
@@ -154,7 +156,21 @@ In the next exercise, we'll use
 -- 0048
 example (n : ℤ) : even (n^2) ↔ even n :=
 begin
-  sorry
+  split,
+  { contrapose,
+    rw ← int.odd_iff_not_even,
+    intros h1,
+    rw ← int.odd_iff_not_even,
+    cases h1 with m hm,
+    use (2*m^2 + 2*m),
+    rw hm,
+    ring,
+  },
+  { intro h1,
+    cases h1 with m hm,
+    use 2 * m^2,
+    rw hm,
+    ring },
 end
 /-
 As a last step on our law of the excluded middle tour, let's notice that, especially
