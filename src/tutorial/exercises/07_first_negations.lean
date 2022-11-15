@@ -215,7 +215,7 @@ begin
     {
       right,
       intro hQ,
-      exact h (and.intro hP hQ),
+      exact h ⟨hP,hQ⟩,
     },
     {
       left,
@@ -224,9 +224,9 @@ begin
   },
   {
     rintros h1 ⟨hP,hQ⟩,
-    cases h1,
-    { exact h1 hP },
-    { exact h1 hQ },
+    cases h1 with hnP hnQ,
+    { exact hnP hP },
+    { exact hnQ hQ },
   }
 end
 
