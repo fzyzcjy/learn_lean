@@ -128,7 +128,15 @@ def cauchy_sequence (u : ℕ → ℝ) := ∀ ε > 0, ∃ N, ∀ p q, p ≥ N →
 -- 0043
 example : (∃ l, seq_limit u l) → cauchy_sequence u :=
 begin
-  sorry
+  rintros ⟨l,hyp⟩,
+  intros ε ε_pos,
+  cases hyp (ε/2) (by linarith) with N hN,
+  use N,
+  intros p q hp hq,
+  calc |u p - u q| = |(u p - l) + (l - u q)| : by ring_nf
+  ... ≤ |u p - l| + |l - u q| : abs_add _ _
+  ... ≤ ε/2 + ε/2 : by rw [hN p _, hN q _] -- TODO
+  ... ≤ ε : by ring,
 end
 
 
