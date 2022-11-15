@@ -242,13 +242,7 @@ begin
   split,
   {
     intros h1 k h2,
-    -- have fact: (∃ k, n = 2*k),
-    -- { use k,
-    --   exact h2 },
-    -- exact h1 fact,
-    apply h1,
-    use k,
-    exact h2,
+    exact h1 ⟨k, h2⟩,
   },
   {
     rintros h1 ⟨k,h2⟩,
