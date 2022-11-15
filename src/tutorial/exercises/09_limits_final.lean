@@ -34,10 +34,11 @@ begin
   intros ε ε_pos,
   cases hu ε ε_pos with N hN,
   cases ineg with M hM,
-  specialize hN (max N M) (le_max_left _ _),
-  specialize hM (max N M) (le_max_right _ _),
+  let K := max N M,
+  specialize hN K (le_max_left _ _),
+  specialize hM K (le_max_right _ _),
   rw abs_le at hN,
-  linarith [hN.left],
+  linarith,
 end
 
 /-
