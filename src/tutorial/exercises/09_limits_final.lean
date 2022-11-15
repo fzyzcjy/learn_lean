@@ -105,10 +105,36 @@ begin
         linarith,
       },
       choose u hu using this,
-      sorry
+      use u,
+      split,
+      { 
+        apply limit_of_sub_le_inv_succ, -- use apply
+        intros n,
+        rw abs_le,
+        specialize hu n,
+        split,
+        { linarith },
+        { 
+          unfold is_sup at h,
+          cases h,
+          unfold upper_bound at h_left,
+          specialize h_left (u n) hu.left,
+          linarith,
+        },
+      },
+      { intro n,
+        exact (hu n).left },
   } },
   { rintro ⟨maj, u, limu, u_in⟩, 
-    sorry
+    split,
+    { exact maj },
+    {
+      intros y h,
+      apply lim_le limu,
+      intros n,
+      apply h,
+      exact u_in n,
+    }
   },
 end
 
