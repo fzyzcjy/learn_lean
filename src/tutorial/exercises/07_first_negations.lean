@@ -263,16 +263,23 @@ def even_fun (f : ℝ → ℝ) := ∀ x, f (-x) = f x
 -- 0051
 example (f : ℝ → ℝ) : ¬ even_fun f ↔ ∃ x, f (-x) ≠ f x :=
 begin
+  unfold even_fun,
+  -- push_neg, -- then done
   split,
   {
     contrapose,
     intros h,
     rw not_not,
-    sorry,
+    intros x,
+    by_contradiction h2,
+    -- exact h ⟨x,h2⟩,
+    apply h,
+    use x,
   },
   {
-    intros h,
-    sorry,
+    rintros ⟨x, hx⟩ h2,
+    -- by_contradiction h2, -- can use rintros
+    exact hx (h2 x),
   },
 end
 
