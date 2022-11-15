@@ -102,7 +102,16 @@ existential statements.
 lemma subseq_tendsto_of_tendsto' (h : seq_limit u l) (hφ : extraction φ) :
 seq_limit (u ∘ φ) l :=
 begin
-  sorry
+  intros ε ε_pos,
+  cases h ε ε_pos with N hN,
+  use (φ N),
+  intros n hn,
+  specialize hN (φ n),
+  have hp : (φ n ≥ N),
+  calc φ n ≥ n : by linarith [id_le_extraction' hφ n]
+  ... ≥ φ N : hn
+  ... ≥ N : by linarith [id_le_extraction' hφ N],
+  exact hN hp,
 end
 
 /-- If `u` tends to `l` all its cluster points are equal to `l`. -/
