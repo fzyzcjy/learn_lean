@@ -89,8 +89,8 @@ begin
   cases h1 (l+2) with M h3,
   cases h2 1 (by linarith) with N h4,
   let n := max N M,
-  specialize h3 n (by linarith [le_max_right N M]),
-  specialize h4 n (by linarith [le_max_left N M]),
+  specialize h3 n (le_max_right _ _),
+  specialize h4 n (le_max_left _ _),
   rw abs_le at h4,
   linarith,
 end
