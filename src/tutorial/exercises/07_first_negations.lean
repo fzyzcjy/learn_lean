@@ -322,7 +322,12 @@ end
 -- 0053
 example (x : ℝ) : (∀ ε > 0, x ≤ ε) → x ≤ 0 :=
 begin
-  sorry
+  contrapose,
+  push_neg,
+  intro h,
+  use (x/2),
+  -- ring, -- cannot
+  split; linarith,
 end
 
 /-
