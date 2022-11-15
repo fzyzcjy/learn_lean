@@ -22,7 +22,16 @@ variables P Q : Prop
 -- 0055
 example : (P → Q) ↔ (¬ Q → ¬ P) :=
 begin
-  sorry
+  split,
+  {
+    intros h1 hnQ hP,
+    exact hnQ (h1 hP),
+  },
+  {
+    intros h1 hP,
+    by_contradiction hnQ,
+    exact h1 hnQ hP,
+  }
 end
 
 -- 0056
