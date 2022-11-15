@@ -208,7 +208,26 @@ end
 -- 0049
 example : ¬ (P ∧ Q) ↔ ¬ P ∨ ¬ Q :=
 begin
-  sorry
+  split,
+  {
+    intros h,
+    by_cases hP : P,
+    {
+      right,
+      intro hQ,
+      exact h (and.intro hP hQ),
+    },
+    {
+      left,
+      exact hP,
+    }
+  },
+  {
+    rintros h1 ⟨hP,hQ⟩,
+    cases h1,
+    { exact h1 hP },
+    { exact h1 hQ },
+  }
 end
 
 /-
