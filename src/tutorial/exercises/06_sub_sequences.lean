@@ -153,6 +153,9 @@ begin
   use N,
   intros n hn,
   specialize hN m n hm hn,
-  
+  calc |u n - l| = |(u n - u m) + (u m - l)| : by ring_nf
+  ... ≤ |u n - u m| + |u m - l| : by apply abs_add
+  ... ≤ |u m - u n| + |u m - l| : by rw abs_sub_comm _ _
+  ... ≤ ε : by linarith,
 end
 
