@@ -142,7 +142,15 @@ but we won't need this.
 example {A : set ℝ} {x : ℝ} (hx : is_sup A x) :
 ∀ y, y < x → ∃ a ∈ A, y < a :=
 begin
-  sorry
+  unfold is_sup at hx,
+  intros y hyx,
+  by_contradiction h2,
+  push_neg at h2,
+  have hy : upper_bound A y,
+  { exact h2 },
+  have h3 : x ≤ y,
+  { exact hx.right y hy },
+  linarith,
 end
 
 /-
