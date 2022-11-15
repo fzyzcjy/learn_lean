@@ -101,7 +101,15 @@ def nondecreasing_seq (u : ℕ → ℝ) := ∀ n m, n ≤ m → u n ≤ u m
 example (u : ℕ → ℝ) (l : ℝ) (h : seq_limit u l) (h' : nondecreasing_seq u) :
   ∀ n, u n ≤ l :=
 begin
-  sorry
+  intros n,
+  by_contradiction h2,
+  push_neg at h2,
+  cases h ((u n - l)/2) (by linarith) with N h3,
+  let m := max n N,
+  specialize h3 m (le_max_right _ _),
+  rw abs_le at h3,
+  specialize h' n m (le_max_left _ _),
+  linarith,
 end
 
 /-
