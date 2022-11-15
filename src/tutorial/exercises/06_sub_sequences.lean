@@ -134,9 +134,9 @@ begin
   use N,
   intros p q hp hq,
   calc |u p - u q| = |(u p - l) + (l - u q)| : by ring_nf
-  ... ≤ |u p - l| + |l - u q| : abs_add _ _
-  ... ≤ ε/2 + ε/2 : by rw [hN p _, hN q _] -- TODO
-  ... ≤ ε : by ring,
+  ... ≤ |u p - l| + |l - u q| : by apply abs_add
+  ... = |u p - l| + |u q - l| : by rw abs_sub_comm l (u q)
+  ... ≤ ε : by linarith [hN p hp, hN q hq],
 end
 
 
