@@ -293,17 +293,18 @@ end
 example (f : ℝ → ℝ) : ¬ even_fun f ↔ ∃ x, f (-x) ≠ f x :=
 begin
   unfold even_fun,
-  split,
-  {
-    intro h,
-    push_neg at h,
-    exact h,
-  },
-  {
-    intro h,
-    push_neg,
-    exact h,
-  },
+  push_neg,
+  -- split,
+  -- {
+  --   intro h,
+  --   push_neg at h,
+  --   exact h,
+  -- },
+  -- {
+  --   intro h,
+  --   push_neg,
+  --   exact h,
+  -- },
 end
 
 def bounded_above (f : ℝ → ℝ) := ∃ M, ∀ x, f x ≤ M
